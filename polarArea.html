@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Polar Area Chart</title>
+		<script src="polar.js"></script>
+		<meta name = "viewport" content = "initial-scale = 1, user-scalable = no">
+		<style>
+		</style>
+	</head>
+	<body>
+		<canvas id="canvas" height="400" width="400"></canvas>
+		<script>
+		var chartData = [
+				{
+					min: 0,
+					value: +(Math.random()*100).toFixed(),
+					max: 100,
+					angle: Math.PI/4,
+					unit: "kg",
+					color: "#c0392b",
+					mouseover: function() {
+						console.log('coucou');
+					}
+				},
+				{
+					min: 0,
+					value : +(Math.random()*100).toFixed(),
+					max: 100,
+					angle: Math.PI/4,
+					unit: "kg",
+					color: "#d35400"
+				},
+				{
+					min: 0,
+					value : +(Math.random()*100).toFixed(),
+					max: 100,
+					angle: Math.PI/4,
+					unit: "kg",
+					color: "#f1c40f"
+				},
+				{
+					min: 0,
+					value : +(Math.random()*100).toFixed(),
+					max: 100,
+					angle: Math.PI/4,
+					unit: "kg",
+					color: "#2ecc71"
+				},
+				{
+					min: 0,
+					value : +(Math.random()*100).toFixed(),
+					max: 100,
+					angle: Math.PI/4,
+					unit: "kg",
+					color: "#2980b9"
+				},
+				{
+					min: 0,
+					value : +(Math.random()*100).toFixed(),
+					max: 100,
+					angle: Math.PI/4,
+					unit: "kg",
+					color: "#8e44ad"
+				},
+				{
+					min: 0,
+					value : +(Math.random()*100).toFixed(),
+					max: 100,
+					angle: Math.PI/4,
+					unit: "kg",
+					color: "#9b59b6"
+				},
+				{
+					min: 0,
+					value : +(Math.random()*100).toFixed(),
+					max: 100,
+					angle: Math.PI/4,
+					unit: "kg",
+					color: "#2c3e50"
+				}
+			];
+		var myPolarArea = new Chart(document.getElementById("canvas").getContext("2d")).PolarArea(chartData);
+		</script>
+	</body>
+</html>
