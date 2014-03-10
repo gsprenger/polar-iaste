@@ -512,8 +512,7 @@ window.Chart = function(context){
     }
 
     function drawAllSegments(animationDecimal){
-      var startAngle = -Math.PI/2,
-      angleStep = (Math.PI*2)/data.length,
+      var startAngle = -Math.PI/2
       scaleAnimation = 1,
       rotateAnimation = 1;
       if (config.animation) {
@@ -524,7 +523,8 @@ window.Chart = function(context){
           rotateAnimation = animationDecimal;
         }
       }
-      for (var i=0; i<data.length; i++){
+      for (var i=0; i<data.length; i++) {
+        var angleStep = data[i].angle*0.0174532925;
         var area = {
           centerPoint: {
             x: width/2,
@@ -555,7 +555,7 @@ window.Chart = function(context){
           ctx.lineWidth = config.segmentStrokeWidth;
           ctx.stroke();
         }
-        startAngle += rotateAnimation*angleStep;
+        startAngle = area.endAngle;
       }
     }
 
