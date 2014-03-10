@@ -1,6 +1,6 @@
 var chartData = [], amount;
-amount = +(Math.random()*10).toFixed();
-for (var i=-1; i<amount; i++) {
+amount = +(Math.random()*10).toFixed()+1;
+for (var i=0; i<amount; i++) {
   chartData.push({
     min: 0,
     value: +(Math.random()*100).toFixed(),
