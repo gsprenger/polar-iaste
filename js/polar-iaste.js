@@ -32,7 +32,7 @@ function randomChartData() {
 
 // display chart
 function displayChart(data) {
-  new Chart(document.getElementById("canvas").getContext("2d")).PolarArea(data, {
+  new Chart($("#canvas").get(0).getContext("2d")).PolarArea(data, {
     scaleShowLabels: false,
     scaleShowLine: false
   });
@@ -121,7 +121,6 @@ function initCustomZone() {
   });  
 }
 
-
 function initColorPickers() {
   $('.colorpicker').each(function(el, i) {
     var colorField = '#f-'+$(this).attr('id');
@@ -137,10 +136,18 @@ function initColorPickers() {
   });
 }
 
+function saveImg() {
+  document.location.href = ($("#canvas").get(0).toDataURL()).replace("image/png", "image/octet-stream");
+}
+
 $(document).ready(function() {
   init8Zone();
   initCustomZone();
   initColorPickers();
+
+  $('#savetoimg').click(function() {
+    saveImg();
+  });
 
   $('#random').click(function() {
     displayChart(randomChartData());
