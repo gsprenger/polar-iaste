@@ -7,6 +7,9 @@
 		<!-- Bootstrap library -->
 		<link href='lib/css/bootstrap.css' rel='stylesheet'>
 		<script src='lib/js/bootstrap.js'></script>
+		<!-- Color picker -->
+		<link href='lib/css/farbtastic.css' rel='stylesheet'>
+		<script src='lib/js/farbtastic.js'></script>
 		<!-- Custom polar chart library-->
 		<script src="js/polar.js"></script>
 		<!-- App JS & CSS -->
@@ -15,7 +18,44 @@
 		<meta name = "viewport" content = "initial-scale = 1, user-scalable = no">
 	</head>
 	<body>
-		<canvas id="canvas" height="400" width="400" style='float:left;'></canvas>
+		<h3>Polar Area Chart Generator</h3>
+		<div class='main-container'>
+			<div class='wrapper'>
+				<div class='canvas-container'>
+					<div class='canvasfix'>
+						<canvas id="canvas" height="400" width="400"></canvas>
+						<div class='btn-container'>
+							<button class='btn btn-success' id='savetoimg'>Save to PNG</button>
+							<button class='btn btn-default' id='random'>Random</button>
+						</div>
+					</div>
+				</div>
+				<div class='form-container'>
+					<ul class="nav nav-tabs">
+					  <li class="active"><a href="#custom" data-toggle="tab">Custom</a></li>
+					  <li><a href="#4x2" data-toggle="tab">4x2 Area</a></li>
+					</ul>
+					<div class="tab-content">
+					  <div class="tab-pane fade in active" id="custom">
+					  	<!-- CUSTOM CHART -->
+					  	<div class='btn-group' id='custom-btn-group'>
+					  		<a href='#' class='btn btn-default' id='less'>&#8211;</a>
+					  		<a href='#' class='btn btn-default' id='more'>+</a>
+					  	</div>
+							<div class='btn-container' id='custom-btn-container'>
+					  		<button class='btn btn-primary' id='generate-custom'>Generate</button>
+				  		</div>
+					  </div>
+					  <div class="tab-pane fade" id="4x2">
+						  <!-- 4x2 CHART -->
+					  	<div class='btn-container'>
+					  		<button class='btn btn-primary' id='generate-4x2'>Generate</button>
+				  		</div>
+					  </div>
+					</div>
+				</div>
+			</div>
+		</div>
 		<pre></pre>
 	</body>
 </html>
