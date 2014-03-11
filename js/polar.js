@@ -530,7 +530,7 @@ window.Chart = function(context){
             x: width/2,
             y: height/2
           },
-          radius: scaleAnimation * (((data[i].value-data[i].min)/data[i].max)*maxSize),
+          radius: scaleAnimation * (((data[i].value-data[i].min)/(data[i].max-data[i].min))*maxSize),
           startAngle: startAngle,
           endAngle: startAngle + rotateAnimation*angleStep,
           areaIndex: i
