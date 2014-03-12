@@ -479,6 +479,23 @@ window.Chart = function(context){
 
     function drawScale(){
       for (var i=0; i<calculatedScale.steps; i++){
+        // If axis must be drawn
+        if (config.scaleShowXYAxis) {
+          // X Axis
+          ctx.beginPath();
+          ctx.moveTo(10, height/2);
+          ctx.lineTo(width-10, height/2);
+          ctx.strokeStyle = '#666666';
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+          // Y Axis
+          ctx.beginPath();
+          ctx.moveTo(width/2, 10);
+          ctx.lineTo(width/2, height-10);
+          ctx.strokeStyle = '#666666';
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+        }
         //If the line object is there
         if (config.scaleShowLine){
           ctx.beginPath();

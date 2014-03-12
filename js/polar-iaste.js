@@ -31,10 +31,13 @@ function randomChartData() {
 }
 
 // display chart
-function displayChart(data) {
-  new Chart($("#canvas").get(0).getContext("2d")).PolarArea(data, {
-    scaleShowLabels: false
-  });
+function displayChart(data, config) {
+  if (config == null) {
+    config = {
+      scaleShowLabels: false
+    };
+  }
+  new Chart($("#canvas").get(0).getContext("2d")).PolarArea(data, config);
   $('pre').text(JSON.stringify(data, null, '\t'));
 }
 
@@ -75,7 +78,7 @@ function init8Zone() {
   });
   $('#generate-4x2').click(function () {
     var chartData = [], tmp;
-    $('.4x2-input').each(function(el, i) {
+    $('.4x2-input').each(function(i, el) {
       chartData.push({
         min:   0,
         value: 0,
@@ -86,7 +89,7 @@ function init8Zone() {
       });  
       chartData.push({
         min:   +($(this).find('.min').val() ? $(this).find('.min').val() : 0),
-        value: +($(this).find('.val').val()),
+        value: +($(this).find('.val').val() ? $(this).find('.val').val() : 10*i+20),
         max:   +($(this).find('.max').val() ? $(this).find('.max').val() : 100),
         angle: +($(this).find('.angle').val() ? $(this).find('.angle').val() : 25),
         unit:  ($(this).find('.unit').val() ? $(this).find('.unit').val() : ''),
@@ -101,7 +104,10 @@ function init8Zone() {
         color: '#ffffff'
       });   
     });
-    displayChart(chartData);
+    displayChart(chartData, {
+      scaleShowLabels: false,
+      scaleShowXYAxis: true
+    });
   });
 }
 
