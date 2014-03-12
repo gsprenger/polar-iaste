@@ -33,20 +33,19 @@ function randomChartData() {
 // display chart
 function displayChart(data) {
   new Chart($("#canvas").get(0).getContext("2d")).PolarArea(data, {
-    scaleShowLabels: false,
-    scaleShowLine: false
+    scaleShowLabels: false
   });
   $('pre').text(JSON.stringify(data, null, '\t'));
 }
 
-function getAreaFormHTML(id, suffix) {
+function getAreaFormHTML(id, suffix, showAngle) {
   return "" +
     "<div class='well well-sm "+suffix+"-input' id='"+suffix+"-input-"+id+"'>\n" +
       "\tRange: [<input type='text' id='"+suffix+"-min"+id+"' class='min' placeholder='0'>, " +
       "<input type='text' id='"+suffix+"-max"+id+"' class='max' placeholder='100'>], value: " +
-      "<input type='text' id='"+suffix+"-value"+id+"' class='val'>, angle: " +
-      "<input type='text' id='"+suffix+"-angle"+id+"' class='angle' placeholder='45'>&deg;, Unit: " +
-      "<input type='text' id='"+suffix+"-unit"+id+"' class='unit'>,\n"+
+      "<input type='text' id='"+suffix+"-value"+id+"' class='val'>, "+
+      (showAngle?"":"angle: <input type='text' id='"+suffix+"-angle"+id+"' class='angle' placeholder='45'>&deg;, ") +
+      "Unit: <input type='text' id='"+suffix+"-unit"+id+"' class='unit'>,\n"+
       "\t<div class='colorselect'>\n" +
         "\t\tColor: <input type='text' id='f-"+suffix+"-color"+id+"' value='#123456' class='color'>\n" +
         "\t\t<div id='"+suffix+"-color"+id+"' class='colorpicker'></div>" +
@@ -58,7 +57,7 @@ function getAreaFormHTML(id, suffix) {
 function init8Zone() {
   var html = '';
   for (var i=0; i<8; i++) {
-    html += getAreaFormHTML(i, '4x2') +
+    html += getAreaFormHTML(i, '4x2', true) +
       (i%2==0||i==7 ? "" : "<hr>");
   }
   $('#4x2').prepend(html);
@@ -78,13 +77,29 @@ function init8Zone() {
     var chartData = [], tmp;
     $('.4x2-input').each(function(el, i) {
       chartData.push({
+        min:   0,
+        value: 0,
+        max:   100,
+        angle: 10,
+        unit:  '',
+        color: '#ffffff'
+      });  
+      chartData.push({
         min:   +($(this).find('.min').val() ? $(this).find('.min').val() : 0),
         value: +($(this).find('.val').val()),
         max:   +($(this).find('.max').val() ? $(this).find('.max').val() : 100),
-        angle: +($(this).find('.angle').val() ? $(this).find('.angle').val() : 45),
+        angle: +($(this).find('.angle').val() ? $(this).find('.angle').val() : 25),
         unit:  ($(this).find('.unit').val() ? $(this).find('.unit').val() : ''),
         color: $(this).find('.color').val()
-      });    
+      });   
+      chartData.push({
+        min:   0,
+        value: 0,
+        max:   100,
+        angle: 10,
+        unit:  '',
+        color: '#ffffff'
+      });   
     });
     displayChart(chartData);
   });
