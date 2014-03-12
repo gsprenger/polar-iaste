@@ -45,17 +45,31 @@ function displayChart(data, config, margin) {
   $('pre').text(JSON.stringify(data, null, '\t'));
 }
 
-function getAreaFormHTML(id, suffix, showAngle) {
+function getCustomAreaFormHTML(id) {
   return "" +
-    "<div class='well well-sm "+suffix+"-input' id='"+suffix+"-input-"+id+"'>\n" +
-      "\tRange: [<input type='text' id='"+suffix+"-min"+id+"' class='min' placeholder='0'>, " +
-      "<input type='text' id='"+suffix+"-max"+id+"' class='max' placeholder='100'>], value: " +
-      "<input type='text' id='"+suffix+"-value"+id+"' class='val'>, "+
-      (showAngle?"":"angle: <input type='text' id='"+suffix+"-angle"+id+"' class='angle' placeholder='90'>&deg;, ") +
-      "Unit: <input type='text' id='"+suffix+"-unit"+id+"' class='unit'>,\n"+
+    "<div class='well well-sm custom-input' id='custom-input-"+id+"'>\n" +
+      "\tRange: [<input type='text' id='custom-min"+id+"' class='min' placeholder='0'>, " +
+      "<input type='text' id='custom-max"+id+"' class='max' placeholder='100'>], value: " +
+      "<input type='text' id='custom-value"+id+"' class='val'>, "+
+      "angle: <input type='text' id='custom-angle"+id+"' class='angle' placeholder='90'>&deg;, " +
+      "Unit: <input type='text' id='custom-unit"+id+"' class='unit'>,\n"+
       "\t<div class='colorselect'>\n" +
-        "\t\tColor: <input type='text' id='f-"+suffix+"-color"+id+"' value='#123456' class='color'>\n" +
-        "\t\t<div id='"+suffix+"-color"+id+"' class='colorpicker'></div>" +
+        "\t\tColor: <input type='text' id='f-custom-color"+id+"' value='#123456' class='color'>\n" +
+        "\t\t<div id='custom-color"+id+"' class='colorpicker'></div>" +
+      "</div>" +
+    "</div>";
+}
+
+function get4x2AreaFormHTML(id) {
+  return "" +
+    "<div class='well well-sm 4x2-input' id='4x2-input-"+id+"'>\n" +
+      "\tRange: [<input type='text' id='4x2-min"+id+"' class='min' placeholder='0'>, " +
+      "<input type='text' id='4x2-max"+id+"' class='max' placeholder='100'>], value: " +
+      "<input type='text' id='4x2-value"+id+"' class='val'>, "+
+      "Unit: <input type='text' id='4x2-unit"+id+"' class='unit'>,\n"+
+      "\t<div class='colorselect'>\n" +
+        "\t\tColor: <input type='text' id='f-4x2-color"+id+"' value='#123456' class='color'>\n" +
+        "\t\t<div id='4x2-color"+id+"' class='colorpicker'></div>" +
       "</div>" +
     "</div>";
 }
@@ -64,7 +78,7 @@ function getAreaFormHTML(id, suffix, showAngle) {
 function init8Zone() {
   var html = '';
   for (var i=0; i<8; i++) {
-    html += getAreaFormHTML(i, '4x2', true) +
+    html += get4x2AreaFormHTML(i, '4x2', true) +
       (i%2==0||i==7 ? "" : "<hr>");
   }
   $('#4x2').prepend(html);
@@ -121,15 +135,23 @@ function init8Zone() {
 function initCustomZone() {
   var html = '', cnt;
   for (cnt=0; cnt<4; cnt++) {
-    html += getAreaFormHTML(cnt, 'custom');
+    html += getCustomAreaFormHTML(cnt, 'custom');
   }
   $(html).insertAfter($('#custom-btn-group'));
+  var updateAnglePlaceholder = function() {
+    var val = 360 / $('.custom-input .angle').length;
+    $('.custom-input .angle').each(function() {
+      $(this).attr('placeholder', val);
+    })
+  };
   $('#more').click(function () {
-    $(getAreaFormHTML(cnt++, 'custom')).insertBefore('#custom-btn-container');
+    $(getCustomAreaFormHTML(cnt++, 'custom')).insertBefore('#custom-btn-container');
     initColorPickers();
+    updateAnglePlaceholder();
   });
   $('#less').click(function () {
     $('.custom-input').last().remove();
+    updateAnglePlaceholder();
     cnt--;
   });
   $('#generate-custom').click(function () {
@@ -139,7 +161,7 @@ function initCustomZone() {
         min:   +($(this).find('.min').val() ? $(this).find('.min').val() : 0),
         value: +($(this).find('.val').val()),
         max:   +($(this).find('.max').val() ? $(this).find('.max').val() : 100),
-        angle: +($(this).find('.angle').val() ? $(this).find('.angle').val() : 90),
+        angle: +($(this).find('.angle').val() ? $(this).find('.angle').val() : $(this).find('.angle').attr('placeholder')),
         unit:  ($(this).find('.unit').val() ? $(this).find('.unit').val() : ''),
         color: $(this).find('.color').val()
       });    
