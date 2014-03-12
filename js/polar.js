@@ -8,7 +8,7 @@
  */
 
 //Define the global Chart Variable as a class.
-window.Chart = function(context){
+window.Chart = function(context, paramMargin){
 	var chart = this;
 
 	//Easing functions adapted from Robert Penner's easing equations
@@ -145,16 +145,21 @@ window.Chart = function(context){
 	};
 
 	//Variables global to the chart
-	var width = context.canvas.width;
-	var height = context.canvas.height;
+  var margin = (paramMargin == null ? 0 : paramMargin);
+  var originalWidth = context.canvas.width;
+	var originalHeight = context.canvas.height;
+  var height = originalHeight - margin;
+  var width = originalWidth - margin;
+  var centerX = originalWidth/2;
+  var centerY = originalHeight/2;
 	var position;
 
 	//High pixel density displays - multiply the size of the canvas height/width by the device pixel ratio, then scale.
 	if (window.devicePixelRatio) {
-		context.canvas.style.width = width + "px";
-		context.canvas.style.height = height + "px";
-		context.canvas.height = height * window.devicePixelRatio;
-		context.canvas.width = width * window.devicePixelRatio;
+		context.canvas.style.width = originalWidth + "px";
+		context.canvas.style.height = originalHeight + "px";
+		context.canvas.height = originalHeight * window.devicePixelRatio;
+		context.canvas.width = originalWidth * window.devicePixelRatio;
 		context.scale(window.devicePixelRatio, window.devicePixelRatio);
 	}
 
@@ -186,14 +191,15 @@ window.Chart = function(context){
 			animationEasing : "easeOutBounce",
 			animateRotate : true,
 			animateScale : false,
-			onAnimationComplete : null
+			onAnimationComplete : null,
+      showLabels: false
 		};
 		var config = (options)? mergeChartConfig(chart.PolarArea.defaults,options) : chart.PolarArea.defaults;
 		return new PolarArea(data,config,context);
 	};
 	
 	var clear = function(c){
-		c.clearRect(0, 0, width, height);
+		c.clearRect(0, 0, originalWidth, originalHeight);
 	};
 
 	function calculateOffset(val,calculatedScale,scaleHop){
@@ -483,47 +489,26 @@ window.Chart = function(context){
         if (config.scaleShowXYAxis) {
           // X Axis
           ctx.beginPath();
-          ctx.moveTo(10, height/2);
-          ctx.lineTo(width-10, height/2);
-          ctx.strokeStyle = '#666666';
+          ctx.moveTo(10, centerY);
+          ctx.lineTo(originalWidth-10, centerY);
+          ctx.strokeStyle = '#999999';
           ctx.lineWidth = 1.5;
           ctx.stroke();
           // Y Axis
           ctx.beginPath();
-          ctx.moveTo(width/2, 10);
-          ctx.lineTo(width/2, height-10);
-          ctx.strokeStyle = '#666666';
+          ctx.moveTo(centerX, 10);
+          ctx.lineTo(centerX, originalHeight-10);
+          ctx.strokeStyle = '#999999';
           ctx.lineWidth = 1.5;
           ctx.stroke();
         }
         //If the line object is there
         if (config.scaleShowLine){
           ctx.beginPath();
-          ctx.arc(width/2, height/2, scaleHop * (i + 1), 0, (Math.PI * 2), true);
+          ctx.arc(centerX, centerY, scaleHop * (i + 1), 0, (Math.PI * 2), true);
           ctx.strokeStyle = config.scaleLineColor;
           ctx.lineWidth = config.scaleLineWidth;
           ctx.stroke();
-        }
-        if (config.scaleShowLabels){
-          ctx.textAlign = "center";
-          ctx.font = config.scaleFontStyle + " " + config.scaleFontSize + "px " + config.scaleFontFamily;
-          var label =  calculatedScale.labels[i];
-          //If the backdrop object is within the font object
-          if (config.scaleShowLabelBackdrop){
-            var textWidth = ctx.measureText(label).width;
-            ctx.fillStyle = config.scaleBackdropColor;
-            ctx.beginPath();
-            ctx.rect(
-              Math.round(width/2 - textWidth/2 - config.scaleBackdropPaddingX),     //X
-              Math.round(height/2 - (scaleHop * (i + 1)) - config.scaleFontSize*0.5 - config.scaleBackdropPaddingY),//Y
-              Math.round(textWidth + (config.scaleBackdropPaddingX*2)), //Width
-              Math.round(config.scaleFontSize + (config.scaleBackdropPaddingY*2)) //Height
-            );
-            ctx.fill();
-          }
-          ctx.textBaseline = "middle";
-          ctx.fillStyle = config.scaleFontColor;
-          ctx.fillText(label,width/2,height/2 - (scaleHop * (i + 1)));
         }
       }
     }
@@ -546,8 +531,8 @@ window.Chart = function(context){
         var angleStep = data[i].angle*0.0174532925;
         var area = {
           centerPoint: {
-            x: width/2,
-            y: height/2
+            x: centerX,
+            y: centerY
           },
           radius: scaleAnimation * (((data[i].value-data[i].min)/(data[i].max-data[i].min))*maxSize),
           startAngle: startAngle,

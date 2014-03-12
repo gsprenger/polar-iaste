@@ -31,13 +31,17 @@ function randomChartData() {
 }
 
 // display chart
-function displayChart(data, config) {
+function displayChart(data, config, margin) {
   if (config == null) {
     config = {
-      scaleShowLabels: false
+      scaleShowLabels: false,
+      scaleShowLine: false,
     };
   }
-  new Chart($("#canvas").get(0).getContext("2d")).PolarArea(data, config);
+  if (margin == null) {
+    margin = 0;
+  }
+  new Chart($("#canvas").get(0).getContext("2d"), margin).PolarArea(data, config);
   $('pre').text(JSON.stringify(data, null, '\t'));
 }
 
@@ -106,8 +110,10 @@ function init8Zone() {
     });
     displayChart(chartData, {
       scaleShowLabels: false,
-      scaleShowXYAxis: true
-    });
+      scaleShowLine: true,
+      scaleShowXYAxis: true,
+      showLabels: true
+    }, 50);
   });
 }
 
