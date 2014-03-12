@@ -73,6 +73,10 @@ hr {
   width: 70px;
 }
 
+.name {
+  width: 100px;
+}
+
 pre {
   margin-top: 25px;
   clear: both;

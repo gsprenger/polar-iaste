@@ -570,7 +570,10 @@ window.Chart = function(context, paramMargin){
             var overXC = (labelX > width/2),
                 overYC = (labelY > height/2);
             var w = ctx.measureText(txt1).width,
-                h = config.scaleFontSize;
+                w2 = ctx.measureText(txt2).width,
+                h = config.scaleFontSize,
+                paddingY = 5,
+                paddingX = 2;
             if (overXC) {
               if (overYC) {;
                 labelY += h; 
@@ -585,6 +588,14 @@ window.Chart = function(context, paramMargin){
             }
             ctx.fillStyle = '#000000';
             ctx.fillText(txt1, labelX, labelY);
+            ctx.fillText(txt2, labelX+((w-w2)/2), labelY+h+paddingY);
+            // underline txt1
+            ctx.beginPath();
+            ctx.moveTo(labelX+paddingX, labelY+paddingY);
+            ctx.lineTo(labelX+w-paddingX, labelY+paddingY);
+            ctx.strokeStyle = '#333333';
+            ctx.lineWidth = 1;
+            ctx.stroke();
           }
         }
         startAngle = area.endAngle;

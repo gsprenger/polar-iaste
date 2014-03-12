@@ -49,9 +49,9 @@ function getCustomAreaFormHTML(id) {
   return "" +
     "<div class='well well-sm custom-input' id='custom-input-"+id+"'>\n" +
       "\tRange: [<input type='text' id='custom-min"+id+"' class='min' placeholder='0'>, " +
-      "<input type='text' id='custom-max"+id+"' class='max' placeholder='100'>], value: " +
+      "<input type='text' id='custom-max"+id+"' class='max' placeholder='100'>], Value: " +
       "<input type='text' id='custom-value"+id+"' class='val'>, "+
-      "angle: <input type='text' id='custom-angle"+id+"' class='angle' placeholder='90'>&deg;, " +
+      "Angle: <input type='text' id='custom-angle"+id+"' class='angle' placeholder='90'>&deg;, " +
       "Unit: <input type='text' id='custom-unit"+id+"' class='unit'>,\n"+
       "\t<div class='colorselect'>\n" +
         "\t\tColor: <input type='text' id='f-custom-color"+id+"' value='#123456' class='color'>\n" +
@@ -63,8 +63,9 @@ function getCustomAreaFormHTML(id) {
 function get4x2AreaFormHTML(id) {
   return "" +
     "<div class='well well-sm 4x2-input' id='4x2-input-"+id+"'>\n" +
-      "\tRange: [<input type='text' id='4x2-min"+id+"' class='min' placeholder='0'>, " +
-      "<input type='text' id='4x2-max"+id+"' class='max' placeholder='100'>], value: " +
+      "\tName: <input type='text' id='4x2-name"+id+"' class='name'>, "+
+      "Range: [<input type='text' id='4x2-min"+id+"' class='min' placeholder='0'>, " +
+      "<input type='text' id='4x2-max"+id+"' class='max' placeholder='100'>], Value: " +
       "<input type='text' id='4x2-value"+id+"' class='val'>, "+
       "Unit: <input type='text' id='4x2-unit"+id+"' class='unit'>,\n"+
       "\t<div class='colorselect'>\n" +
@@ -112,7 +113,7 @@ function init8Zone() {
         angle: +($(this).find('.angle').val() ? $(this).find('.angle').val() : 25),
         unit:  ($(this).find('.unit').val() ? $(this).find('.unit').val() : ''),
         color: $(this).find('.color').val(),
-        name: 'test'
+        name: ($(this).find('.name').val() ? $(this).find('.name').val() : '')
       });   
       chartData.push({
         min:   0,
