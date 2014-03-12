@@ -44,7 +44,7 @@ function getAreaFormHTML(id, suffix, showAngle) {
       "\tRange: [<input type='text' id='"+suffix+"-min"+id+"' class='min' placeholder='0'>, " +
       "<input type='text' id='"+suffix+"-max"+id+"' class='max' placeholder='100'>], value: " +
       "<input type='text' id='"+suffix+"-value"+id+"' class='val'>, "+
-      (showAngle?"":"angle: <input type='text' id='"+suffix+"-angle"+id+"' class='angle' placeholder='45'>&deg;, ") +
+      (showAngle?"":"angle: <input type='text' id='"+suffix+"-angle"+id+"' class='angle' placeholder='90'>&deg;, ") +
       "Unit: <input type='text' id='"+suffix+"-unit"+id+"' class='unit'>,\n"+
       "\t<div class='colorselect'>\n" +
         "\t\tColor: <input type='text' id='f-"+suffix+"-color"+id+"' value='#123456' class='color'>\n" +

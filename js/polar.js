@@ -524,6 +524,8 @@ window.Chart = function(context){
         }
       }
       for (var i=0; i<data.length; i++) {
+        // cap value if out of bounds
+        data[i].value = CapValue(data[i].value, data[i].max, data[i].min);
         var angleStep = data[i].angle*0.0174532925;
         var area = {
           centerPoint: {
