@@ -111,7 +111,8 @@ function init8Zone() {
         max:   +($(this).find('.max').val() ? $(this).find('.max').val() : 100),
         angle: +($(this).find('.angle').val() ? $(this).find('.angle').val() : 25),
         unit:  ($(this).find('.unit').val() ? $(this).find('.unit').val() : ''),
-        color: $(this).find('.color').val()
+        color: $(this).find('.color').val(),
+        name: 'test'
       });   
       chartData.push({
         min:   0,

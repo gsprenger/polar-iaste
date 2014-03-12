@@ -148,8 +148,8 @@ window.Chart = function(context, paramMargin){
   var margin = (paramMargin == null ? 0 : paramMargin);
   var originalWidth = context.canvas.width;
 	var originalHeight = context.canvas.height;
-  var height = originalHeight - margin;
-  var width = originalWidth - margin;
+  var height = originalHeight - 2*margin;
+  var width = originalWidth - 2*margin;
   var centerX = originalWidth/2;
   var centerY = originalHeight/2;
 	var position;
@@ -489,15 +489,15 @@ window.Chart = function(context, paramMargin){
         if (config.scaleShowXYAxis) {
           // X Axis
           ctx.beginPath();
-          ctx.moveTo(10, centerY);
-          ctx.lineTo(originalWidth-10, centerY);
+          ctx.moveTo(margin, centerY);
+          ctx.lineTo(originalWidth-margin, centerY);
           ctx.strokeStyle = '#999999';
           ctx.lineWidth = 1.5;
           ctx.stroke();
           // Y Axis
           ctx.beginPath();
-          ctx.moveTo(centerX, 10);
-          ctx.lineTo(centerX, originalHeight-10);
+          ctx.moveTo(centerX, margin);
+          ctx.lineTo(centerX, originalHeight-margin);
           ctx.strokeStyle = '#999999';
           ctx.lineWidth = 1.5;
           ctx.stroke();
@@ -558,6 +558,34 @@ window.Chart = function(context, paramMargin){
           ctx.strokeStyle = config.segmentStrokeColor;
           ctx.lineWidth = config.segmentStrokeWidth;
           ctx.stroke();
+        }
+        // draw label
+        if (config.showLabels) {
+          if (area.radius != 0) {
+            var labelAngle = startAngle + (area.endAngle-startAngle)/2,
+                txt1 = data[i].name+' ['+data[i].min+','+data[i].max+']',
+                txt2 = data[i].value+' '+data[i].unit;
+            var labelX = (width/2-5)*Math.cos(labelAngle) + area.centerPoint.x,
+                labelY = (height/2-5)*Math.sin(labelAngle) + area.centerPoint.y;
+            var overXC = (labelX > width/2),
+                overYC = (labelY > height/2);
+            var w = ctx.measureText(txt1).width,
+                h = config.scaleFontSize;
+            if (overXC) {
+              if (overYC) {;
+                labelY += h; 
+              }
+            } else {
+              if (overYC) {
+                labelX -= w;
+                labelY += h;
+              } else {
+                labelX -= w;
+              }
+            }
+            ctx.fillStyle = '#000000';
+            ctx.fillText(txt1, labelX, labelY);
+          }
         }
         startAngle = area.endAngle;
       }
