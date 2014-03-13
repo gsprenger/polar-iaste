@@ -492,14 +492,14 @@ window.Chart = function(context, paramMargin){
           ctx.moveTo(margin, centerY);
           ctx.lineTo(originalWidth-margin, centerY);
           ctx.strokeStyle = '#999999';
-          ctx.lineWidth = 1.5;
+          ctx.lineWidth = 2;
           ctx.stroke();
           // Y Axis
           ctx.beginPath();
           ctx.moveTo(centerX, margin);
           ctx.lineTo(centerX, originalHeight-margin);
           ctx.strokeStyle = '#999999';
-          ctx.lineWidth = 1.5;
+          ctx.lineWidth = 2;
           ctx.stroke();
         }
         //If the line object is there
@@ -565,38 +565,65 @@ window.Chart = function(context, paramMargin){
             var labelAngle = startAngle + (area.endAngle-startAngle)/2,
                 txt1 = data[i].name+' ['+data[i].min+','+data[i].max+']',
                 txt2 = data[i].value+' '+data[i].unit;
-            var labelX = (width/2-5)*Math.cos(labelAngle) + area.centerPoint.x,
-                labelY = (height/2-5)*Math.sin(labelAngle) + area.centerPoint.y;
-            var overXC = (labelX > width/2),
-                overYC = (labelY > height/2);
+            var labelX = (width/2+20)*Math.cos(labelAngle) + area.centerPoint.x,
+                labelY = (height/2+20)*Math.sin(labelAngle) + area.centerPoint.y;
+            var overXC = (labelX > centerX),
+                overYC = (labelY > centerY);
             var w = ctx.measureText(txt1).width,
                 w2 = ctx.measureText(txt2).width,
                 h = config.scaleFontSize,
-                paddingY = 5,
-                paddingX = 2;
-            if (overXC) {
-              if (overYC) {;
-                labelY += h; 
-              }
-            } else {
-              if (overYC) {
-                labelX -= w;
-                labelY += h;
-              } else {
-                labelX -= w;
-              }
+                paddingY = 4;
+            labelX -= (w/2);
+            if (overYC) {
+              labelY += h; 
             }
             ctx.fillStyle = '#000000';
             ctx.fillText(txt1, labelX, labelY);
             ctx.fillText(txt2, labelX+((w-w2)/2), labelY+h+paddingY);
             // underline txt1
             ctx.beginPath();
-            ctx.moveTo(labelX+paddingX, labelY+paddingY);
-            ctx.lineTo(labelX+w-paddingX, labelY+paddingY);
+            ctx.moveTo(labelX, labelY+paddingY);
+            ctx.lineTo(labelX+w, labelY+paddingY);
             ctx.strokeStyle = '#333333';
             ctx.lineWidth = 1;
             ctx.stroke();
           }
+        }
+        // draw section
+        if (data[i].section && data[i].section !== '') {
+          ctx.font ='bold 12px Arial';
+          var angleTab = [];
+          angleTab[1] = -Math.PI/4;
+          angleTab[7] = Math.PI/4;
+          angleTab[13] = (3*Math.PI)/4;
+          angleTab[19] = (5*Math.PI)/4;
+          var sectionX = (width/2+40)*Math.cos(angleTab[i]) + area.centerPoint.x,
+              sectionY = (height/2+40)*Math.sin(angleTab[i]) + area.centerPoint.y,
+              txt = data[i].section;
+          var overXC = (sectionX > width/2),
+              overYC = (sectionY > height/2);
+          var w = ctx.measureText(txt).width,
+              h = config.scaleFontSize;
+          if (overXC) {
+            if (overYC) {;
+              sectionY += h; 
+            }
+          } else {
+            if (overYC) {
+              sectionX -= w;
+              sectionY += h;
+            } else {
+              sectionX -= w;
+            }
+          }
+          ctx.fillStyle = '#000000';
+          ctx.fillText(data[i].section, sectionX, sectionY);
+          ctx.beginPath();
+          ctx.rect(sectionX-4, sectionY-h, w+8, h+4);
+          ctx.lineWidth = 1;
+          ctx.strokeStyle = '#000000';
+          ctx.stroke();
+          ctx.font ='12px Arial';
         }
         startAngle = area.endAngle;
       }

@@ -79,7 +79,9 @@ function get4x2AreaFormHTML(id) {
 function init8Zone() {
   var html = '';
   for (var i=0; i<8; i++) {
-    html += get4x2AreaFormHTML(i, '4x2', true) +
+
+    html += (i%2==0 ? "Section: <input type='text' id='4x2-section"+i+"' class='section'>" : "") +
+      get4x2AreaFormHTML(i, '4x2', true) +
       (i%2==0||i==7 ? "" : "<hr>");
   }
   $('#4x2').prepend(html);
@@ -113,7 +115,8 @@ function init8Zone() {
         angle: +($(this).find('.angle').val() ? $(this).find('.angle').val() : 25),
         unit:  ($(this).find('.unit').val() ? $(this).find('.unit').val() : ''),
         color: $(this).find('.color').val(),
-        name: ($(this).find('.name').val() ? $(this).find('.name').val() : '')
+        name: ($(this).find('.name').val() ? $(this).find('.name').val() : ''),
+        section: ($('#4x2-section'+i).length ? $('#4x2-section'+i).val(): '')
       });   
       chartData.push({
         min:   0,
@@ -129,7 +132,7 @@ function init8Zone() {
       scaleShowLine: true,
       scaleShowXYAxis: true,
       showLabels: true
-    }, 50);
+    }, 100);
   });
 }
 
