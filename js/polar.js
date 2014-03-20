@@ -484,24 +484,38 @@ window.Chart = function(context, paramMargin){
     }
 
     function drawScale(){
-      for (var i=0; i<calculatedScale.steps; i++){
-        // If axis must be drawn
-        if (config.scaleShowXYAxis) {
-          // X Axis
+      // If axis must be drawn
+      if (config.scaleShowXYAxis) {
+        // X Axis
+        ctx.beginPath();
+        ctx.moveTo(margin, centerY);
+        ctx.lineTo(originalWidth-margin, centerY);
+        ctx.strokeStyle = '#999999';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        // Y Axis
+        ctx.beginPath();
+        ctx.moveTo(centerX, margin);
+        ctx.lineTo(centerX, originalHeight-margin);
+        ctx.strokeStyle = '#999999';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      } else if (config.scaleShowQuintAxis) {
+        var angleScale = function (i) {
+          return (i*Math.PI/5)-(Math.PI/2);
+        };
+        for (var i=0; i<5; i++) {
+          var x = (width/2+10)*Math.cos(angleScale(2*i)) + centerX,
+              y = (height/2+10)*Math.sin(angleScale(2*i)) + centerY;
           ctx.beginPath();
-          ctx.moveTo(margin, centerY);
-          ctx.lineTo(originalWidth-margin, centerY);
-          ctx.strokeStyle = '#999999';
-          ctx.lineWidth = 2;
-          ctx.stroke();
-          // Y Axis
-          ctx.beginPath();
-          ctx.moveTo(centerX, margin);
-          ctx.lineTo(centerX, originalHeight-margin);
+          ctx.moveTo(centerX, centerY);
+          ctx.lineTo(x, y);
           ctx.strokeStyle = '#999999';
           ctx.lineWidth = 2;
           ctx.stroke();
         }
+      }
+      for (var i=0; i<calculatedScale.steps; i++){
         //If the line object is there
         if (config.scaleShowLine){
           ctx.beginPath();
@@ -593,10 +607,18 @@ window.Chart = function(context, paramMargin){
         if (data[i].section && data[i].section !== '') {
           ctx.font ='bold 12px Arial';
           var angleTab = [];
-          angleTab[1] = -Math.PI/4;
-          angleTab[7] = Math.PI/4;
-          angleTab[13] = (3*Math.PI)/4;
-          angleTab[19] = (5*Math.PI)/4;
+          if (config.scaleShowXYAxis) {
+            angleTab[1] = -Math.PI/4;
+            angleTab[7] = Math.PI/4;
+            angleTab[13] = (3*Math.PI)/4;
+            angleTab[19] = (5*Math.PI)/4;
+          } else if (config.scaleShowQuintAxis) {
+            angleTab[1] = (Math.PI/5)-(Math.PI/2);
+            angleTab[7] = (3*Math.PI/5)-(Math.PI/2);
+            angleTab[13] = (5*Math.PI/5)-(Math.PI/2);
+            angleTab[19] = (7*Math.PI/5)-(Math.PI/2);
+            angleTab[25] = (9*Math.PI/5)-(Math.PI/2);
+          }
           var sectionX = (width/2+40)*Math.cos(angleTab[i]) + area.centerPoint.x,
               sectionY = (height/2+40)*Math.sin(angleTab[i]) + area.centerPoint.y,
               txt = data[i].section;
