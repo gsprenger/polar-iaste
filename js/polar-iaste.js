@@ -333,7 +333,6 @@ function displayChart(data, config, margin) {
     margin = 0;
   }
   new Chart($("#canvas").get(0).getContext("2d"), margin).PolarArea(data, config);
-  $('pre').text(JSON.stringify(data, null, '\t'));
 }
 
 function initColorPickers() {
