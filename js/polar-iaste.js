@@ -441,6 +441,8 @@ function displayChart(data, config, margin) {
     margin = 0;
   }
   new Chart($("#canvas").get(0).getContext("2d"), margin).PolarArea(data, config);
+  $('#code-container').text(JSON.stringify(data, null, '\t'));
+  $('#config-container').text(JSON.stringify(config, null, '\t'));
 }
 
 function initColorPickers() {
