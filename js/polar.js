@@ -416,6 +416,7 @@ window.Chart = function(context, paramMargin){
     valueBounds = getValueBounds();
     labelTemplateString = (config.scaleShowLabels)? config.scaleLabel : null;
     // Check and set the scale
+      console.log(config.scaleOverride)
     if (!config.scaleOverride){
       calculatedScale = calculateScale(scaleHeight,valueBounds.maxSteps,valueBounds.minSteps,valueBounds.maxValue,valueBounds.minValue,labelTemplateString);
     }

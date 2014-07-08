@@ -126,7 +126,11 @@ function init4x2Zone() {
       scaleShowLabels: false,
       scaleShowLine: true,
       scaleShowXYAxis: true,
-      showLabels: true
+      showLabels: true,
+      scaleOverride: true,
+      scaleSteps: 10,
+      scaleStepWidth: 10,
+      scaleStartValue: 0
     }, 100);
   });
 }
@@ -203,7 +207,11 @@ function init4x3Zone() {
       scaleShowLabels: false,
       scaleShowLine: true,
       scaleShowXYAxis: true,
-      showLabels: true
+      showLabels: true,
+      scaleOverride: true,
+      scaleSteps: 10,
+      scaleStepWidth: 10,
+      scaleStartValue: 0
     }, 100);
   });
 }
@@ -280,7 +288,11 @@ function init5x2Zone() {
       scaleShowLabels: false,
       scaleShowLine: true,
       scaleShowQuintAxis: true,
-      showLabels: true
+      showLabels: true,
+      scaleOverride: true,
+      scaleSteps: 10,
+      scaleStepWidth: 10,
+      scaleStartValue: 0
     }, 100);
   });
 }
@@ -392,7 +404,11 @@ function init2xZone() {
       scaleShowXAxis: true,
       startAngle: -Math.PI,
       sectionMargin: 25,
-      showLabels: true
+      showLabels: true,
+      scaleOverride: true,
+      scaleSteps: 10,
+      scaleStepWidth: 10,
+      scaleStartValue: 0
     }, 100);
   });  
 }
@@ -409,8 +425,12 @@ function initTextZone() {
     config = {
       scaleShowLabels: false,
       scaleShowLine: true,
-      showLabels: true
-    }
+      showLabels: true,
+      scaleOverride: true,
+      scaleSteps: 10,
+      scaleStepWidth: 10,
+      scaleStartValue: 0
+    };
     switch(option) {
       case 'Custom':
         margin = 0;
@@ -478,9 +498,11 @@ function displayChart(data, config, margin) {
       scaleShowLine: false,
     };
   }
+
   if (margin == null) {
     margin = 0;
   }
+  console.log(config)
   new Chart($("#canvas").get(0).getContext("2d"), margin).PolarArea(data, config);
   $('#text-area').val(JSON.stringify(data, null, '\t'));
 }
