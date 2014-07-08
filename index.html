@@ -46,6 +46,7 @@
 					  <li><a href="#4x3" data-toggle="tab">4x3</a></li>
 					  <li><a href="#5x2" data-toggle="tab">5x2</a></li>
 					  <li><a href="#2x" data-toggle="tab">2x*</a></li>
+					  <li><a href="#text-zone" data-toggle="tab">Text</a></li>
 					</ul>
 					<div class="tab-content">
 					  <div class="tab-pane fade in active" id="custom">
@@ -98,6 +99,20 @@
 					  		<button class='btn btn-primary' id='generate-2x'>Generate</button>
 				  		</div>
 					  </div>
+					  <div class="tab-pane fade" id="text-zone">
+						  <!-- TEXT CHART -->
+							<select id='text-select' class="form-control">
+							  <option>Custom</option>
+							  <option>4x2</option>
+							  <option>4x3</option>
+							  <option>5x2</option>
+							  <option selected>2x*</option>
+							</select>
+						  <textarea id='text-area'></textarea>
+					  	<div class='btn-container'>
+					  		<button class='btn btn-primary' id='generate-text'>Generate</button>
+				  		</div>
+					  </div>
 					</div>
 					<hr>
 					<div>
@@ -108,10 +123,6 @@
 					</div>
 				</div>
 			</div>
-		</div>
-		<div>
-			<pre id='code-container'></pre>
-			<pre id='config-container'></pre>
 		</div>
 		<img id='dlimg' src=''>
 	</body>

@@ -391,10 +391,51 @@ function init2xZone() {
       scaleShowLine: true,
       scaleShowXAxis: true,
       startAngle: -Math.PI,
+      sectionMargin: 25,
       showLabels: true
     }, 100);
   });  
 }
+
+/********************
+**     TEXT AREA    **
+********************/
+function initTextZone() {
+  $('#generate-text').click(function () {
+    var option, data;
+    data = JSON.parse($('#text-area').val())
+    option = $('#text-select').val()
+    margin = 100;
+    config = {
+      scaleShowLabels: false,
+      scaleShowLine: true,
+      showLabels: true
+    }
+    switch(option) {
+      case 'Custom':
+        margin = 0;
+        config.scaleShowLine = false;
+        config.showLabels = false;
+        break;
+      case '4x2':
+      case '4x3':
+        config.scaleShowXYAxis = true;
+        break;
+      case '5x2':
+        config.scaleShowQuintAxis = true;
+        break;
+      case '2x*':
+        config.scaleShowXAxis = true;
+        config.startAngle = -Math.PI;
+        config.sectionMargin = 25;
+        break;
+      default:
+        break;
+    }
+    displayChart(data, config, margin)
+  });
+}
+
 
 /********************
 ** SERVICE METHODS **
@@ -441,8 +482,7 @@ function displayChart(data, config, margin) {
     margin = 0;
   }
   new Chart($("#canvas").get(0).getContext("2d"), margin).PolarArea(data, config);
-  $('#code-container').text(JSON.stringify(data, null, '\t'));
-  $('#config-container').text(JSON.stringify(config, null, '\t'));
+  $('#text-area').val(JSON.stringify(data, null, '\t'));
 }
 
 function initColorPickers() {
@@ -473,6 +513,7 @@ $(document).ready(function() {
   init4x3Zone();
   init5x2Zone();
   init2xZone();
+  initTextZone()
   initColorPickers();
 
   $('#savetoimg').click(function() {

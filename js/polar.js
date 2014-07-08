@@ -630,8 +630,9 @@ window.Chart = function(context, paramMargin){
             angleTab[data.length-2] = Math.PI/48
           }
           if (angleTab[i] != undefined) {
-            var sectionX = (width/2+50)*Math.cos(angleTab[i]) + area.centerPoint.x,
-                sectionY = (height/2+50)*Math.sin(angleTab[i]) + area.centerPoint.y,
+            var sectionMargin = config.sectionMargin || 40
+            var sectionX = (width/2+sectionMargin)*Math.cos(angleTab[i]) + area.centerPoint.x,
+                sectionY = (height/2+sectionMargin)*Math.sin(angleTab[i]) + area.centerPoint.y,
                 txt = data[i].section;
             var overXC = (sectionX > width/2),
                 overYC = (sectionY > height/2);
