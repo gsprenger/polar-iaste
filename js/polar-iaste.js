@@ -75,7 +75,6 @@ function get4x2AreaFormHTML(id) {
 function init4x2Zone() {
   var html = '';
   for (var i=0; i<8; i++) {
-
     html += (i%2==0 ? "Section: <input type='text' id='4x2-section"+i+"' class='section'>" : "") +
       get4x2AreaFormHTML(i) +
       (i%2==0||i==7 ? "" : "<hr>");
@@ -127,7 +126,11 @@ function init4x2Zone() {
       scaleShowLabels: false,
       scaleShowLine: true,
       scaleShowXYAxis: true,
-      showLabels: true
+      showLabels: true,
+      scaleOverride: true,
+      scaleSteps: 10,
+      scaleStepWidth: 10,
+      scaleStartValue: 0
     }, 100);
   });
 }
@@ -153,7 +156,6 @@ function get4x3AreaFormHTML(id) {
 function init4x3Zone() {
   var html = '';
   for (var i=0; i<12; i++) {
-
     html += (i%3==0 ? "Section: <input type='text' id='4x3-section"+i+"' class='section'>" : "") +
       get4x3AreaFormHTML(i) +
       (i%3==0||i%3==1||i==11 ? "" : "<hr>");
@@ -205,7 +207,11 @@ function init4x3Zone() {
       scaleShowLabels: false,
       scaleShowLine: true,
       scaleShowXYAxis: true,
-      showLabels: true
+      showLabels: true,
+      scaleOverride: true,
+      scaleSteps: 10,
+      scaleStepWidth: 10,
+      scaleStartValue: 0
     }, 100);
   });
 }
@@ -231,7 +237,6 @@ function get5x2AreaFormHTML(id) {
 function init5x2Zone() {
   var html = '';
   for (var i=0; i<10; i++) {
-
     html += (i%2==0 ? "Section: <input type='text' id='5x2-section"+i+"' class='section'>" : "") +
       get5x2AreaFormHTML(i) +
       (i%2==0||i==9 ? "" : "<hr>");
@@ -283,10 +288,174 @@ function init5x2Zone() {
       scaleShowLabels: false,
       scaleShowLine: true,
       scaleShowQuintAxis: true,
-      showLabels: true
+      showLabels: true,
+      scaleOverride: true,
+      scaleSteps: 10,
+      scaleStepWidth: 10,
+      scaleStartValue: 0
     }, 100);
   });
 }
+
+/********************
+**     2x* AREA    **
+********************/
+function get2xNAreaFormHTML(id) {
+  return "" +
+    "<div class='well well-sm 2x-n-input' id='2x-n-input-"+id+"'>\n" +
+      "\tName: <input type='text' id='2x-n-name"+id+"' class='name'>, "+
+      "Range: [<input type='text' id='2x-n-min"+id+"' class='min' placeholder='0'>, " +
+      "<input type='text' id='2x-n-max"+id+"' class='max' placeholder='100'>], Value: " +
+      "<input type='text' id='2x-n-value"+id+"' class='val'>, "+
+      "Unit: <input type='text' id='2x-n-unit"+id+"' class='unit'>,\n"+
+      "\t<div class='colorselect'>\n" +
+        "\t\tColor: <input type='text' id='f-2x-n-color"+id+"' value='#123456' class='color'>\n" +
+        "\t\t<div id='2x-n-color"+id+"' class='colorpicker'></div>" +
+      "</div>" +
+    "</div>";
+}
+
+function get2xSAreaFormHTML(id) {
+  return "" +
+    "<div class='well well-sm 2x-s-input' id='2x-s-input-"+id+"'>\n" +
+      "\tName: <input type='text' id='2x-s-name"+id+"' class='name'>, "+
+      "Range: [<input type='text' id='2x-s-min"+id+"' class='min' placeholder='0'>, " +
+      "<input type='text' id='2x-s-max"+id+"' class='max' placeholder='100'>], Value: " +
+      "<input type='text' id='2x-s-value"+id+"' class='val'>, "+
+      "Unit: <input type='text' id='2x-s-unit"+id+"' class='unit'>,\n"+
+      "\t<div class='colorselect'>\n" +
+        "\t\tColor: <input type='text' id='f-2x-s-color"+id+"' value='#123456' class='color'>\n" +
+        "\t\t<div id='2x-s-color"+id+"' class='colorpicker'></div>" +
+      "</div>" +
+    "</div>";
+}
+
+function init2xZone() {
+  var htmlN="",
+      htmlS="",
+      cnt, cntN=3, cntS=3;
+  for (cnt=0; cnt<3; cnt++) {
+    htmlN += get2xNAreaFormHTML(cnt);
+    htmlS += get2xSAreaFormHTML(cnt);
+  }
+  $(htmlN).appendTo($('#2x-section-north'));
+  $(htmlS).appendTo($('#2x-section-south'));
+  $('#2x-n-more').click(function () {
+    $(get2xNAreaFormHTML(cntN++)).appendTo($('#2x-section-north'));
+    initColorPickers();
+  });
+  $('#2x-n-less').click(function () {
+    if ($('.2x-n-input').length > 1) {
+      $('.2x-n-input').last().remove();
+      cntN--;
+    }
+  });
+  $('#2x-s-more').click(function () {
+    $(get2xSAreaFormHTML(cntN++)).appendTo($('#2x-section-south'));
+    initColorPickers();
+  });
+  $('#2x-s-less').click(function () {
+    if ($('.2x-s-input').length > 1) {
+      $('.2x-s-input').last().remove();
+      cntS--;
+    }
+  });
+  $('#generate-2x').click(function () {
+    var chartData = [], tmp,
+        angleN = (180 / $('.2x-n-input').length) - 16,
+        angleS = (180 / $('.2x-s-input').length) - 16;
+    var genChartData = function(i, el, angle, suf) {
+          chartData.push({
+            min:   0,
+            value: 0,
+            max:   100,
+            angle: 8,
+            unit:  '',
+            color: '#ffffff'
+          });  
+          chartData.push({
+            min:   +($(el).find('.min').val() ? $(el).find('.min').val() : 0),
+            value: +($(el).find('.val').val() ? $(el).find('.val').val() : 8*i+30),
+            max:   +($(el).find('.max').val() ? $(el).find('.max').val() : 100),
+            angle: angle,
+            unit:  ($(el).find('.unit').val() ? $(el).find('.unit').val() : ''),
+            color: $(el).find('.color').val(),
+            name: ($(el).find('.name').val() ? $(el).find('.name').val() : ''),
+            section: ($('#2x-section-'+suf).length ? $('#2x-section-'+suf).val(): '')
+          });   
+          chartData.push({
+            min:   0,
+            value: 0,
+            max:   100,
+            angle: 8,
+            unit:  '',
+            color: '#ffffff'
+          });   
+        }
+    $('.2x-n-input').each(function(i, el) {
+      genChartData(i, el, angleN, 'n');
+    });
+    $('.2x-s-input').each(function(i, el) {
+      genChartData(i, el, angleS, 's');
+    });
+    displayChart(chartData, {
+      scaleShowLabels: false,
+      scaleShowLine: true,
+      scaleShowXAxis: true,
+      startAngle: -Math.PI,
+      sectionMargin: 25,
+      showLabels: true,
+      scaleOverride: true,
+      scaleSteps: 10,
+      scaleStepWidth: 10,
+      scaleStartValue: 0
+    }, 100);
+  });  
+}
+
+/********************
+**     TEXT AREA    **
+********************/
+function initTextZone() {
+  $('#generate-text').click(function () {
+    var option, data;
+    data = JSON.parse($('#text-area').val())
+    option = $('#text-select').val()
+    margin = 100;
+    config = {
+      scaleShowLabels: false,
+      scaleShowLine: true,
+      showLabels: true,
+      scaleOverride: true,
+      scaleSteps: 10,
+      scaleStepWidth: 10,
+      scaleStartValue: 0
+    };
+    switch(option) {
+      case 'Custom':
+        margin = 0;
+        config.scaleShowLine = false;
+        config.showLabels = false;
+        break;
+      case '4x2':
+      case '4x3':
+        config.scaleShowXYAxis = true;
+        break;
+      case '5x2':
+        config.scaleShowQuintAxis = true;
+        break;
+      case '2x*':
+        config.scaleShowXAxis = true;
+        config.startAngle = -Math.PI;
+        config.sectionMargin = 25;
+        break;
+      default:
+        break;
+    }
+    displayChart(data, config, margin)
+  });
+}
+
 
 /********************
 ** SERVICE METHODS **
@@ -329,10 +498,13 @@ function displayChart(data, config, margin) {
       scaleShowLine: false,
     };
   }
+
   if (margin == null) {
     margin = 0;
   }
+  console.log(config)
   new Chart($("#canvas").get(0).getContext("2d"), margin).PolarArea(data, config);
+  $('#text-area').val(JSON.stringify(data, null, '\t'));
 }
 
 function initColorPickers() {
@@ -362,6 +534,8 @@ $(document).ready(function() {
   init4x2Zone();
   init4x3Zone();
   init5x2Zone();
+  init2xZone();
+  initTextZone()
   initColorPickers();
 
   $('#savetoimg').click(function() {
